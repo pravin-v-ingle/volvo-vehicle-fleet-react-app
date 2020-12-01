@@ -1,6 +1,6 @@
 import { BYTE,VEHICLE_TYPE} from "../utils/enums";
 
-const vehicles = [
+let vehicles = [
   {
     _id: "5b21ca3eeb7f6fbccd471815",
     displayId:1,
@@ -75,16 +75,25 @@ const vehicles = [
   }
 ];
 
+
+function setVehicletoEmpty() {
+  vehicles=[];
+}
 export function getVehicles() {
+  if(!vehicles)
+  setVehicletoEmpty();
   return vehicles;
 }
 
 export function getVehicle(id) {
+  if(!vehicles)
+  setVehicletoEmpty();
   return vehicles.find(m => m._id === id);
 }
 
 export function getVehicleByChassisId(chassisSeries, chassisNumber) {
-
+  if(!vehicles)
+  setVehicletoEmpty();
 
 
   if(chassisSeries.trim()!=="" && chassisNumber.trim()==="")
@@ -109,10 +118,14 @@ export function getVehicleByChassisId(chassisSeries, chassisNumber) {
 }
 
 export function getVehicleByChassisIdByObj(chassisIdObj) {
+  if(!vehicles)
+  setVehicletoEmpty();
   return vehicles.find(m => m.chassisId.chassisSeries === chassisIdObj.chassisSeries.trim() && m.chassisId.chassisNumber === chassisIdObj.chassisNumber.trim());
 }
 
 export function saveVehicle(vehicle) {
+  if(!vehicles)
+  setVehicletoEmpty();
   let vehiclesInDb = vehicles.find(m => m._id === vehicle._id) || {};
  
   vehiclesInDb.chassisId = { _id: Date.now(), chassisSeries: vehicle.chassisSeries.trim(), chassisNumber: parseInt(vehicle.chassisNumber,10) };
@@ -137,6 +150,8 @@ export function saveVehicle(vehicle) {
 }
 
 export function deleteVehicle(id) {
+  if(!vehicles)
+  setVehicletoEmpty();
   let vehiclesInDb = vehicles.find(m => m._id === id);
   vehicles.splice(vehicles.indexOf(vehiclesInDb), 1);
   return vehiclesInDb;
